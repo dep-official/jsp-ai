@@ -1,0 +1,125 @@
+# JSP AI 프로젝트 - View 전용 Cursor Rules
+
+## 🚨 기존 코드 보호 (최우선)
+**절대 수정하지 말 것:**
+1. 기존에 이미 존재하는 모든 파일
+   - 사용자가 명시적으로 수정 요청하지 않는 한 절대 건드리지 않음
+   - 기존 코드 스타일, 구조, 방식을 그대로 존중
+   
+2. Java 파일 (완전 금지)
+   - `src/main/java/` 폴더의 모든 파일
+   - Controller, Config, Model, Service 등 모든 Java 클래스
+   - `pom.xml`, `web.xml` 등 설정 파일
+
+**수정 가능한 경우:**
+- 사용자가 명시적으로 "이 파일 수정해줘"라고 요청한 경우만
+- 새로 생성하는 파일에만 상세 규칙 적용
+
+## ✅ 새로 작성하는 JSP 파일 규칙 (상세)
+
+### 1. 파일 인코딩 (필수)
+```jsp
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+```
+- 디렉티브는 한 번만 선언 (중복 방지)
+- Tiles 사용 시: `<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>`
+
+### 2. Tiles 구조 및 Definition 이름
+- Layout: `WEB-INF/app/layout.jsp`
+- Pages: `WEB-INF/app/{page-folder}/page.jsp`
+  - 예: `WEB-INF/app/home/page.jsp` → tiles definition: `home`
+  - 예: `WEB-INF/app/user-profile/page.jsp` → tiles definition: `user-profile`
+- Widgets: `WEB-INF/widgets/{WidgetName}/{WidgetName}.jsp` (PascalCase)
+  - 예: `WEB-INF/widgets/Header/Header.jsp` → tiles definition: `header` (kebab-case)
+  - 예: `WEB-INF/widgets/UserCard/UserCard.jsp` → tiles definition: `user-card` (kebab-case)
+- Widgets 내부 UI: `WEB-INF/widgets/{WidgetName}/ui/{ComponentName}/{ComponentName}.jsp` (PascalCase)
+  - 예: `WEB-INF/widgets/Header/ui/Button/Button.jsp` → tiles definition: `header-ui-button` (kebab-case)
+  - 예: `WEB-INF/widgets/UserCard/ui/Modal/Modal.jsp` → tiles definition: `user-card-ui-modal` (kebab-case)
+- Shared/UI: `WEB-INF/shared/ui/{ComponentName}/{ComponentName}.jsp` (PascalCase)
+  - 예: `WEB-INF/shared/ui/Button/Button.jsp` → tiles definition: `button` (kebab-case)
+  - 예: `WEB-INF/shared/ui/Input/Input.jsp` → tiles definition: `input` (kebab-case)
+- 동적 라우팅: `WEB-INF/app/{page}/[id]/page.jsp` → tiles definition: `{page}/[id]`
+  - 예: `WEB-INF/app/events/[id]/page.jsp` → tiles definition: `events/[id]`
+- tiles.xml의 definition 이름:
+  - app 페이지: 폴더 경로와 일치 (kebab-case)
+  - widgets: PascalCase를 kebab-case로 변환
+  - widgets/{WidgetName}/ui: `{widget-name}-ui-{component-name}` 형식 (kebab-case)
+  - shared/ui: PascalCase를 kebab-case로 변환
+
+### 3. Tailwind CSS (Figma 디자인 정확히 반영)
+- 색상: `bg-[#FFFFFF]`, `text-[#1B1E23]`, `border-[#DDE0E5]`
+- 크기: `h-[60px]`, `w-[24px]`, `text-[18px]`
+- 간격: Figma spacing 값 그대로
+- 위치: `left: 20px` → 인라인 스타일 또는 `left-[20px]`
+- 폰트: `font-bold`, `text-[18px]`, `leading-[1.5em]`
+- 커스텀 값은 대괄호 사용: `bg-[#HEX]`
+
+### 4. EL 표현식
+```jsp
+${variable != null ? variable : 'default'}
+${seo != null && seo.title != null ? seo.title : '기본값'}
+```
+- Controller에서 전달된 Model 데이터만 사용
+- 없는 변수는 사용하지 않음
+
+### 5. Figma MCP 이미지 추출 작업
+- 이미지 저장: `public/images/icons/` (아이콘), `public/images/` (일반)
+- 경로 참조 예시: `${pageContext.request.contextPath}/public/images/icons/icon.svg`
+
+### 6. 파일 구조 및 네이밍 규칙
+- **상세 규칙**: `.cursor/folder-structure.md` 참고
+- **FSD 규칙**: `.cursor/fsd-rules.md` 참고 (단방향 의존성, 재사용 원칙)
+- **핵심 요약**:
+  - app 폴더: kebab-case (`home/`, `user-profile/`), 파일명: `page.jsp`
+  - widgets 폴더: PascalCase (`Header/`, `Footer/`), 파일명: `Header.jsp`, `Footer.jsp`
+  - widgets/{WidgetName}/ui 폴더: PascalCase (`Button/`, `Input/`), 파일명: `Button.jsp`, `Input.jsp`
+  - shared/ui 폴더: PascalCase (`Button/`, `Input/`), 파일명: `Button.jsp`, `Input.jsp`
+  - 동적 라우팅: `[id]`, `[slug]` (Next.js 스타일)
+
+### 6-1. FSD 단방향 의존성 규칙 (필수)
+- **의존성 방향**: `app → pages → widgets → features → shared`
+- **규칙**:
+  - ✅ 상위 레벨은 하위 레벨을 import 가능
+  - ❌ 하위 레벨은 상위 레벨을 import 불가
+  - ❌ 같은 레벨 간 import 불가
+- **파일 생성 전**: 반드시 기존 컴포넌트 확인 후 재사용 가능한지 검토
+- **상세 규칙**: `.cursor/fsd-rules.md` 참고
+
+### 7. 주석 작성
+- 한국어로 작성
+- Figma 값 명시: `<!-- 18px, 700 weight, #1B1E23 -->`
+- 위치 값 명시: `<!-- x:20, y:18 -->`
+
+### 8. 퍼블리싱 규칙 (시맨틱 마크업, SEO, 접근성)
+- **상세 규칙**: `.cursor/publishing-rules.md` 참고
+- **핵심 요약**:
+  - 시맨틱 HTML 태그 사용 (`<header>`, `<nav>`, `<main>`, `<article>`, `<section>`, `<footer>`)
+  - SEO 메타 태그 필수 (description, og:title, og:image 등)
+  - 모든 이미지에 `alt` 속성 필수
+  - 인터랙티브 요소에 `aria-label` 추가
+  - 폼 요소에 `<label>` 연결 필수
+  - 키보드 접근성 고려
+
+## ⚠️ 작업 전 확인사항
+1. 이 파일이 기존 파일인가?
+   - Yes → 수정하지 않음 (사용자 명시 요청 시만)
+   - No → 새 파일이면 상세 규칙 적용
+
+2. 사용자가 명시적으로 수정을 요청했는가?
+   - Yes → 요청한 부분만 수정
+   - No → 건드리지 않음
+
+3. Java 파일 수정 요청인가?
+   - Yes → 거부 (View 전용 rules 이므로 불가능)
+   - No → 계속 진행
+
+## Git 커밋 메시지
+- `.cursor/git-convention.md` 참고
+- 형식: `<type>(<scope>): <subject>`
+- 예시: `feat(jsp): GNB 컴포넌트 추가`
+
+## 언어
+- 모든 주석, 설명은 한국어로 작성
+- 변수명, 클래스명은 기존 컨벤션 유지
+
