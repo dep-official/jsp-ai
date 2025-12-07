@@ -11,7 +11,7 @@ public class HomeController {
     public String home(Model model) {
         model.addAttribute("message", "Hello, World!");
         model.addAttribute("title", "JSP MCP TEST");
-        return "index";
+        return "home";
     }
 }
 
