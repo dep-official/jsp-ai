@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+    "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+    "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+    
+    <!-- 기본 레이아웃 (단일 레이아웃) -->
+    <definition name="baseLayout" template="/WEB-INF/app/layout.jsp">
+        <put-attribute name="header" value="/WEB-INF/widgets/header/header.jsp" />
+        <put-attribute name="content" value="" />
+        <put-attribute name="footer" value="/WEB-INF/widgets/footer/footer.jsp" />
+    </definition>
+    
+    <!-- Home 페이지 -->
+    <definition name="home" extends="baseLayout">
+        <put-attribute name="content" value="/WEB-INF/app/home/page.jsp" />
+    </definition>
+    
+    <!-- Events 목록 페이지 -->
+    <definition name="events" extends="baseLayout">
+        <put-attribute name="content" value="/WEB-INF/app/events/page.jsp" />
+    </definition>
+    
+    <!-- Events 상세 페이지 -->
+    <definition name="events/[id]" extends="baseLayout">
+        <put-attribute name="content" value="/WEB-INF/app/events/[id]/page.jsp" />
+    </definition>
+    
+</tiles-definitions>
