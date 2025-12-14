@@ -17,7 +17,7 @@
 <%@ taglib prefix="productSet" tagdir="/WEB-INF/tags/widgets/ProductSet" %>
 <%@ taglib prefix="toast" tagdir="/WEB-INF/tags/shared/ui/Toast" %>
 
-<main class="container px-5 py-8 mx-auto">
+<main class="container px-5 py-8 mx-auto max-w-[390px]">
     <div class="flex flex-col gap-8">
         <div>
             <h2 class="mb-4 text-2xl font-bold">Title 위젯</h2>
