@@ -1,4 +1,4 @@
-package com.core.controller;
+package com.core.common.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,4 +14,5 @@ public class HomeController {
         return "home";
     }
 }
+
 

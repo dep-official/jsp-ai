@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <!-- 캐시 사용 -->
+        <setting name="cacheEnabled" value="true"/>
+        <!-- 지연 로딩 사용 -->
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <!-- 지연 로딩 시 aggressiveLazyLoading 비활성화 -->
+        <setting name="aggressiveLazyLoading" value="false"/>
+        <!-- null 값 처리 -->
+        <setting name="jdbcTypeForNull" value="NULL"/>
+        <!-- 로그 구현체 -->
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+        <!-- 언더스코어를 카멜케이스로 자동 변환 -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+    
+    <typeAliases>
+        <package name="com.core.event.entity"/>
+        <package name="com.core.product.entity"/>
+        <package name="com.core.brand.entity"/>
+    </typeAliases>
+</configuration>
+
+
