@@ -123,3 +123,49 @@ ${seo != null && seo.title != null ? seo.title : '기본값'}
 - 모든 주석, 설명은 한국어로 작성
 - 변수명, 클래스명은 기존 컨벤션 유지
 
+## Figma 컴포넌트 자동 생성 규칙
+사용자가 Figma 링크를 제공하고 컴포넌트 생성을 요청할 때, 다음 규칙을 자동으로 적용:
+
+1. **Figma 데이터 분석**
+   - `get_figma_data`로 노드 구조 및 스타일 정보 추출
+   - 필요한 이미지는 `download_figma_images`로 자동 추출
+   - 이미지 저장 경로: `public/images/{category}/` (icons, banners, products 등)
+
+2. **FSD 규칙 자동 적용**
+   - 컴포넌트 위치 결정: `widgets/`, `shared/ui/`, `features/` 중 적절한 위치 선택
+   - 단방향 의존성 확인: 상위 레벨에서 하위 레벨만 import
+   - 같은 레벨 간 import 금지 확인
+   - 기존 컴포넌트 재사용 가능 여부 검토
+
+3. **컴포넌트 구조 자동 생성**
+   - List/Carousel 패턴: Item 컴포넌트와 List/Carousel 컴포넌트 분리
+   - 시맨틱 마크업: `<ul>`, `<li>`, `<dl>`, `<dt>`, `<dd>`, `<article>`, `<section>` 등 적절한 태그 사용
+   - 접근성: `aria-label`, `alt` 속성 자동 추가
+
+4. **Figma 디자인 정확 반영**
+   - 색상: `bg-[#HEX]`, `text-[#HEX]` 형식으로 정확히 반영
+   - 크기: `h-[118px]`, `w-[335px]` 등 Figma 값 그대로
+   - 간격: `gap-2` (8px), `gap-[17px]` 등 Figma spacing 값 반영
+   - 폰트: `text-[16px]`, `font-bold`, `leading-[1.5em]`, `tracking-[-0.05em]` 등 정확히 반영
+   - 위치:  Figma 좌표 값 반영 안함 
+
+5. **자동 작업 순서**
+   ```
+   1. Figma 데이터 추출 및 분석
+   2. 필요한 이미지 자동 다운로드
+   3. 기존 컴포넌트 재사용 가능 여부 확인
+   4. FSD 규칙에 맞는 위치 결정
+   5. 컴포넌트 파일 생성 (Item, List, Carousel 등)
+   6. home/page.jsp에 샘플 추가
+   7. 린터 오류 확인 및 수정
+   ```
+
+6. **필수 체크리스트**
+   - ✅ FSD 단방향 의존성 준수
+   - ✅ 시맨틱 HTML 마크업 사용
+   - ✅ Figma 디자인 값 정확히 반영
+   - ✅ 접근성 속성 포함 (aria-label, alt)
+   - ✅ 기존 컴포넌트 재사용 검토
+   - ✅ Tailwind CSS만 사용 (인라인 스타일 금지)
+   - ✅ 한국어 주석 작성
+

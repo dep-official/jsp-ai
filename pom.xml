@@ -13,6 +13,12 @@
 		<org.springframework-version>5.0.7.RELEASE</org.springframework-version>
 		<org.aspectj-version>1.6.10</org.aspectj-version>
 		<org.slf4j-version>1.6.6</org.slf4j-version>
+		<!-- Tailwind CSS CLI 다운로드 설정 -->
+		<tailwind.cli.version>v3.4.18</tailwind.cli.version>
+		<tailwind.executable.name>tailwindcss-macos-x64</tailwind.executable.name>
+		<tailwind.target.dir>src/main/webapp/tailwindcss</tailwind.target.dir>
+		<tailwind.download.url>https://github.com/tailwindlabs/tailwindcss/releases/download/${tailwind.cli.version}/${tailwind.executable.name}</tailwind.download.url>
+		<tailwind.executable>${tailwind.target.dir}/${tailwind.executable.name}</tailwind.executable>
 	</properties>
               
 	<dependencies>
@@ -126,31 +132,18 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- JPA -->
+		<!-- MyBatis -->
 		<dependency>
-			<groupId>javax.persistence</groupId>
-			<artifactId>javax.persistence-api</artifactId>
-			<version>2.2</version>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>3.5.6</version>
 		</dependency>
 
-		<!-- Hibernate (JPA 구현체) -->
+		<!-- MyBatis-Spring (Spring과 통합) -->
 		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>5.4.32.Final</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>5.4.32.Final</version>
-		</dependency>
-
-		<!-- Spring Data JPA -->
-		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-jpa</artifactId>
-			<version>2.0.7.RELEASE</version>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>2.0.6</version>
 		</dependency>
 		
 		<!-- log4jdbc-log4j2 -->
@@ -205,7 +198,7 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.16</version>
+			<version>1.18.30</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -228,6 +221,13 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
 			<version>5.0.7.RELEASE</version>
+		</dependency>
+
+		<!-- SnakeYAML (YAML 파일 파싱용) -->
+		<dependency>
+			<groupId>org.yaml</groupId>
+			<artifactId>snakeyaml</artifactId>
+			<version>1.23</version>
 		</dependency>
 
 		<!-- Spring WebSocket -->
@@ -261,7 +261,85 @@
 	</dependencies>
 	
 	<build>
+		<!-- 플러그인 설정 템플릿 정의 (버전, 실행 설정 등) -->
+		<pluginManagement>
+			<plugins>
+				<!-- Tailwind CSS 빌드 플러그인 설정 -->
+				<!-- exec-maven-plugin: 외부 실행 파일(Tailwind CLI) 실행 -->
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>exec-maven-plugin</artifactId>
+					<version>3.2.0</version>
+					<executions>
+						<!-- Tailwind CSS 빌드 (빌드 시 자동 실행) -->
+						<execution>
+							<id>tailwindcss-build</id>
+							<phase>process-resources</phase>
+							<goals>
+								<goal>exec</goal>
+							</goals>
+							<configuration>
+								<executable>${project.basedir}/${tailwind.executable}</executable>
+								<arguments>
+									<argument>-i</argument>
+									<argument>src/main/webapp/public/css/input.css</argument>
+									<argument>-o</argument>
+									<argument>src/main/webapp/public/css/tailwind.css</argument>
+									<argument>-c</argument>
+									<argument>src/main/webapp/tailwindcss/tailwind.config.js</argument>
+									<argument>--minify</argument>
+								</arguments>
+							</configuration>
+						</execution>
+						<!-- Tailwind CSS Watch 모드 (개발 시 파일 변경 감지) -->
+						<execution>
+							<id>tailwindcss-watch</id>
+							<goals>
+								<goal>exec</goal>
+							</goals>
+							<configuration>
+								<executable>${project.basedir}/${tailwind.executable}</executable>
+								<arguments>
+									<argument>-i</argument>
+									<argument>src/main/webapp/public/css/input.css</argument>
+									<argument>-o</argument>
+									<argument>src/main/webapp/public/css/tailwind.css</argument>
+									<argument>-c</argument>
+									<argument>src/main/webapp/tailwindcss/tailwind.config.js</argument>
+									<argument>--watch</argument>
+								</arguments>
+								<longRunning>true</longRunning>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				
+				<!-- Tailwind CLI 자동 다운로드 플러그인 -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-antrun-plugin</artifactId>
+					<version>3.1.0</version>
+					<dependencies>
+						<dependency>
+							<groupId>ant-contrib</groupId>
+							<artifactId>ant-contrib</artifactId>
+							<version>1.0b3</version>
+							<exclusions>
+								<exclusion>
+									<groupId>ant</groupId>
+									<artifactId>ant</artifactId>
+								</exclusion>
+							</exclusions>
+						</dependency>
+					</dependencies>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		
+		<!-- 실제 사용할 플러그인 등록 -->
 		<plugins>
+			<!-- Eclipse IDE 통합 플러그인 -->
+			<!-- Spring 프로젝트 네이처 및 소스/문서 자동 다운로드 -->
 			<plugin>
 				<artifactId>maven-eclipse-plugin</artifactId>
 				<version>2.9</version>
@@ -276,26 +354,92 @@
 					<downloadJavadocs>true</downloadJavadocs>
 				</configuration>
 			</plugin>
+			
+			<!-- Java 컴파일러 플러그인 -->
+			<!-- Java 1.8 소스/타겟, 경고 표시 설정 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.5.1</version>
+				<version>3.8.1</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
+					<encoding>UTF-8</encoding>
 					<compilerArgument>-Xlint:all</compilerArgument>
 					<showWarnings>true</showWarnings>
 					<showDeprecation>true</showDeprecation>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>1.18.30</version>
+						</path>
+					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
+			
+			<!-- Tailwind CSS 실행 플러그인 -->
+			<!-- pluginManagement에서 정의한 설정 상속 -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.2.1</version>
-				<configuration>
-					<mainClass>org.test.int1.Main</mainClass>
-				</configuration>
 			</plugin>
+			
+			<!-- Tailwind CLI 자동 다운로드 플러그인 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<dependencies>
+					<dependency>
+						<groupId>ant-contrib</groupId>
+						<artifactId>ant-contrib</artifactId>
+						<version>1.0b3</version>
+						<exclusions>
+							<exclusion>
+								<groupId>ant</groupId>
+								<artifactId>ant</artifactId>
+							</exclusion>
+						</exclusions>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<id>download-tailwind-cli</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="maven.plugin.classpath"/>
+								<echo message="Checking for Tailwind CLI executable at ${project.basedir}/${tailwind.executable}"/>
+								<if>
+									<not>
+										<available file="${project.basedir}/${tailwind.executable}"/>
+									</not>
+									<then>
+										<echo message="Tailwind CLI not found. Downloading from ${tailwind.download.url}"/>
+										<mkdir dir="${project.basedir}/${tailwind.target.dir}"/>
+										<get src="${tailwind.download.url}" 
+										     dest="${project.basedir}/${tailwind.executable}"/>
+										<echo message="Tailwind CLI download complete."/>
+										<chmod file="${project.basedir}/${tailwind.executable}" perm="+x"/>
+									</then>
+								</if>
+								<if>
+									<available file="${project.basedir}/${tailwind.executable}"/>
+									<then>
+										<chmod file="${project.basedir}/${tailwind.executable}" perm="+x"/>
+									</then>
+								</if>
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<!-- WAR 패키징 플러그인 -->
+			<!-- WAR 파일 생성 시 webapp 디렉토리 지정 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
@@ -304,6 +448,79 @@
 					<warSourceDirectory>src/main/webapp</warSourceDirectory>
 				</configuration>
 			</plugin>
+			
+			<!-- Surefire 플러그인 (테스트 실행) -->
+			<!-- Java 9+ 모듈 시스템 호환성을 위한 JVM 인자 추가 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.2.5</version>
+				<configuration>
+					<argLine>
+						--add-opens java.base/java.lang=ALL-UNNAMED
+						--add-opens java.base/java.util=ALL-UNNAMED
+					</argLine>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
+	
+	<!-- OS별 빌드 프로필 설정 -->
+	<profiles>
+		<!-- macOS x64 환경용 프로필 -->
+		<profile>
+			<id>tailwind-mac-x64</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+				<os>
+					<family>mac</family>
+					<arch>x86_64</arch>
+				</os>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>remove-quarantine</id>
+								<phase>validate</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<configuration>
+									<executable>xattr</executable>
+									<arguments>
+										<argument>-d</argument>
+										<argument>com.apple.quarantine</argument>
+										<argument>${project.basedir}/${tailwind.executable}</argument>
+									</arguments>
+									<successCodes>
+										<successCode>0</successCode>
+										<successCode>1</successCode>
+									</successCodes>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		
+		<!-- Windows 환경용 프로필 -->
+		<profile>
+			<id>tailwind-windows</id>
+			<activation>
+				<os>
+					<family>windows</family>
+				</os>
+			</activation>
+			<properties>
+				<tailwind.executable.name>tailwindcss-windows-x64.exe</tailwind.executable.name>
+				<tailwind.download.url>https://github.com/tailwindlabs/tailwindcss/releases/download/${tailwind.cli.version}/${tailwind.executable.name}</tailwind.download.url>
+				<tailwind.executable>${tailwind.target.dir}/${tailwind.executable.name}</tailwind.executable>
+			</properties>
+		</profile>
+	</profiles>
 </project>

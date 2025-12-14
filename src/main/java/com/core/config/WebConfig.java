@@ -10,10 +10,12 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
+import org.springframework.context.annotation.Import;
 
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = "com.core")
+@Import(DataSourceConfig.class)
 public class WebConfig implements WebMvcConfigurer {
 
     // Tiles 설정
@@ -29,6 +31,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Bean
     public ViewResolver viewResolver() {
         TilesViewResolver resolver = new TilesViewResolver();
+        resolver.setOrder(1); // 우선순위 설정
         return resolver;
     }
 

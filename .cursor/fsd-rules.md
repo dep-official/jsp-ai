@@ -53,6 +53,61 @@
 - **의존 가능**: 없음 (최하위)
 - **의존 불가**: 모든 상위 레벨
 
+### 3. Segment (세그먼트)
+
+**Segment란?**
+- Slice와 App·Shared Layer에서 기술적 목적에 따라 코드를 그룹화하는 단위
+- 각 레벨 내에서 코드를 기능별이 아닌 기술적 목적별로 분류
+
+**일반적인 Segment 종류:**
+
+#### `ui/` - UI 컴포넌트
+- **역할**: UI 표현과 직접 관련된 코드
+- **포함**: UI components, date formatter, styles 등
+- **예시**: `shared/ui/Button/`, `shared/ui/Input/`, `widgets/Header/ui/`
+
+#### `api/` - API 통신
+- **역할**: 백엔드 통신 및 데이터 로직
+- **포함**: request functions, data types, mappers 등
+- **예시**: `features/user-profile/api/`, `shared/api/`
+
+#### `model/` - 도메인 모델
+- **역할**: 애플리케이션 도메인 모델
+- **포함**: schema, interfaces, store, business logic 등
+- **예시**: `features/cart/model/`, `shared/model/`
+
+#### `lib/` - 공통 라이브러리
+- **역할**: 해당 Slice에서 여러 모듈이 함께 사용하는 공통 library code
+- **포함**: 유틸리티 함수, 헬퍼 함수 등
+- **예시**: `features/user-profile/lib/`, `shared/lib/`
+
+#### `config/` - 설정 파일
+- **역할**: 환경·기능 설정
+- **포함**: configuration files, feature flags 등
+- **예시**: `features/user-profile/config/`, `shared/config/`
+
+**Segment 사용 예시:**
+```
+shared/
+  ├── ui/          # UI 컴포넌트
+  │   ├── Button/
+  │   └── Input/
+  ├── api/         # API 통신
+  │   └── userApi.jsp
+  ├── model/       # 도메인 모델
+  │   └── User.jsp
+  └── lib/         # 공통 라이브러리
+      └── utils.jsp
+
+features/user-profile/
+  ├── ui/          # 사용자 프로필 UI
+  │   └── ProfileCard.jsp
+  ├── api/         # 사용자 프로필 API
+  │   └── profileApi.jsp
+  └── model/       # 사용자 프로필 모델
+      └── Profile.jsp
+```
+
 ## 📋 상세 규칙
 
 ### 규칙 1: 파일 생성 전 재사용 가능성 확인

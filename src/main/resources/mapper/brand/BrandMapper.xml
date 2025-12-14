@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.core.brand.mapper.BrandMapper">
+
+    <!-- Brand ResultMap -->
+    <resultMap id="BrandResultMap" type="com.core.brand.entity.Brand">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="imageUrl" column="image_url"/>
+    </resultMap>
+
+    <!-- 모든 브랜드 조회 -->
+    <select id="findAll" resultMap="BrandResultMap">
+        SELECT
+            id,
+            name,
+            image_url
+        FROM brands
+        ORDER BY id ASC
+    </select>
+
+    <!-- 단일 브랜드 조회 -->
+    <select id="findById" resultMap="BrandResultMap">
+        SELECT
+            id,
+            name,
+            image_url
+        FROM brands
+        WHERE id = #{id}
+    </select>
+
+</mapper>
+

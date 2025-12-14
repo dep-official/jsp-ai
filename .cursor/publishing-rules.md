@@ -2,6 +2,11 @@
 
 ## 1. 시맨틱 마크업 및 SEO (필수)
 
+### 공통 금지 규칙 (UI 작성)
+- 위치값 직접 지정 금지: `absolute`, `top/left/right/bottom` 등 x,y 좌표 기반 배치 사용하지 않음. 레이아웃은 flex/grid/space로 해결.
+- 불필요한 태그 생성 금지: 구조에 꼭 필요한 최소 태그만 사용.
+- inline-style 금지: `style=""`로 스타일 지정하지 않음. Tailwind 유틸리티를 사용.
+
 ### HTML5 시맨틱 태그 사용
 - **시맨틱 태그 우선 사용**
   - `<header>`, `<nav>`, `<main>`, `<article>`, `<section>`, `<aside>`, `<footer>` 적절히 사용

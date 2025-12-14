@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  postgres-dev:
+    image: postgres:16
+    container_name: hddfs-db-dev
+    restart: unless-stopped
+    ports:
+      - "10035:5432"
+    environment:
+      POSTGRES_USER: hddfs_dev
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: hddfs_dev
+      TZ: Asia/Seoul
+      PGTZ: Asia/Seoul
+    volumes:
+      - pg_dev_data:/var/lib/postgresql/data
+
+volumes:
+  pg_dev_data:

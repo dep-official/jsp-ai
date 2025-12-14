@@ -37,3 +37,8 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Tailwind CSS CLI ###
+# Maven이 빌드 시 자동으로 다운로드하므로 Git에서 제외
+src/main/webapp/tailwindcss/tailwindcss-*
+!src/main/webapp/tailwindcss/tailwind.config.js

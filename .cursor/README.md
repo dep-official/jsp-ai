@@ -15,6 +15,11 @@
 4. 퍼블리싱 작업 시 `.cursor/publishing-rules.md` 참고하여 시맨틱 마크업, SEO, 접근성 준수
 5. 규칙 업데이트 후 Git에 커밋하여 팀과 공유
 
+## 공통 UI 작성 추가 금지 규칙
+- 위치값 직접 지정 금지: `absolute`, `top/left/right/bottom`, x,y 좌표 사용하지 않음 (레이아웃은 flex/grid/space 활용)
+- 불필요한 태그 생성 금지: 구조에 꼭 필요한 최소한의 태그만 사용
+- inline-style 금지: `style=""`로 스타일 지정하지 않음 (Tailwind 유틸리티 사용)
+
 ## 기존 코드 보호
 - 기존 파일은 절대 수정하지 않음
 - 새로 생성하는 파일에만 규칙 적용

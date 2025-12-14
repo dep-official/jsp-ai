@@ -6,25 +6,25 @@
 <tiles-definitions>
     
     <!-- 기본 레이아웃 (단일 레이아웃) -->
-    <definition name="baseLayout" template="/WEB-INF/app/layout.jsp">
-        <put-attribute name="header" value="/WEB-INF/widgets/Header/Header.jsp" />
+    <definition name="baseLayout" template="/WEB-INF/tags/app/layout.jsp">
+        <put-attribute name="header" value="/WEB-INF/tags/widgets/Header/Header.jsp" />
         <put-attribute name="content" value="" />
-        <put-attribute name="footer" value="/WEB-INF/widgets/Footer/Footer.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/tags/widgets/Footer/Footer.jsp" />
     </definition>
     
     <!-- Home 페이지 -->
     <definition name="home" extends="baseLayout">
-        <put-attribute name="content" value="/WEB-INF/app/home/page.jsp" />
+        <put-attribute name="content" value="/WEB-INF/tags/app/home/page.jsp" />
     </definition>
     
     <!-- Events 목록 페이지 -->
     <definition name="events" extends="baseLayout">
-        <put-attribute name="content" value="/WEB-INF/app/events/page.jsp" />
+        <put-attribute name="content" value="/WEB-INF/tags/app/events/page.jsp" />
     </definition>
     
     <!-- Events 상세 페이지 -->
-    <definition name="events/[id]" extends="baseLayout">
-        <put-attribute name="content" value="/WEB-INF/app/events/[id]/page.jsp" />
+    <definition name="events-detail" extends="baseLayout">
+        <put-attribute name="content" value="/WEB-INF/tags/app/events/[id]/page.jsp" />
     </definition>
     
 </tiles-definitions>
