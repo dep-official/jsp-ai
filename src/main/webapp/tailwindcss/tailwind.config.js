@@ -6,7 +6,11 @@ module.exports = {
     './src/main/webapp/tailwindcss/**/*.js',
   ],
   theme: {
-    extend: {},
+    extend: {
+      transitionTimingFunction: {
+        'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)', 
+      },
+    },
     screens: {
       'md': '600px',
       'lg': '1200px',
