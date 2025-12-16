@@ -4,7 +4,7 @@ Spring MVC + JSP + MyBatis 기반의 웹 애플리케이션 프로젝트입니�
 
 ## 🚀 기술 스택
 
-- **Backend**: Spring MVC 5.0.7, MyBatis, HikariCP
+- **Backend**: Spring MVC 5.0.7, MyBatis
 - **Frontend**: JSP, Tailwind CSS, Swiper.js
 - **Template Engine**: Apache Tiles 3
 - **Database**: PostgreSQL
@@ -29,7 +29,8 @@ jsp-ai/
 │   │   └── mybatis-config.xml
 │   └── webapp/
 │       ├── WEB-INF/tags/   # JSP 태그 파일 (FSD 구조)
-│       │   ├── app/        # 페이지 (home, events)
+│       │   ├── app/        # 라우팅 (home, events)
+│       │   ├── pages/      # 페이지 (페이지 템플릿 관리)
 │       │   ├── widgets/    # 위젯 컴포넌트
 │       │   ├── features/   # 기능별 컴포넌트
 │       │   └── shared/     # 공유 UI 컴포넌트
