@@ -6,29 +6,53 @@
 
     <!-- Brand ResultMap -->
     <resultMap id="BrandResultMap" type="com.core.brand.entity.Brand">
-        <id property="id" column="id"/>
-        <result property="name" column="name"/>
+        <result property="id" column="id"/>
+        <result property="brandName" column="brand_name"/>
+        <result property="brandCode" column="brand_code"/>
         <result property="imageUrl" column="image_url"/>
+        <result property="description" column="description"/>
+        <result property="isDisplay" column="is_display"/>
+        <result property="displayOrder" column="display_order"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
     </resultMap>
 
+    <sql id="BrandColumns">
+        b.id,
+        b.brand_name,
+        b.brand_code,
+        b.image_url,
+        b.description,
+        b.is_display,
+        b.display_order,
+        b.created_at,
+        b.updated_at
+    </sql>
+
     <!-- 모든 브랜드 조회 -->
-    <select id="findAll" resultMap="BrandResultMap">
+    <select id="getAllBrands" resultMap="BrandResultMap">
         SELECT
-            id,
-            name,
-            image_url
-        FROM brands
-        ORDER BY id ASC
+            <include refid="BrandColumns" />
+        FROM brands b
+        ORDER BY b.id ASC
     </select>
 
     <!-- 단일 브랜드 조회 -->
-    <select id="findById" resultMap="BrandResultMap">
+    <select id="getBrandById" resultMap="BrandResultMap">
         SELECT
-            id,
-            name,
-            image_url
-        FROM brands
-        WHERE id = #{id}
+            <include refid="BrandColumns" />
+        FROM brands b
+        WHERE b.id = #{id}
+    </select>
+
+    <!-- 행사 브랜드 조회 -->
+    <select id="getEventBrandsById" resultMap="BrandResultMap">
+        SELECT
+            <include refid="BrandColumns" />
+        FROM brands b
+        INNER JOIN event_brands eb ON b.id = eb.brand_id
+        WHERE eb.event_id = #{id}
+        ORDER BY eb.display_order ASC
     </select>
 
 </mapper>
