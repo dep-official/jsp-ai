@@ -36,7 +36,7 @@
     </c:otherwise>
 </c:choose>
 
-<aside class="bg-white border-b border-[#DDE0E5] container mx-auto max-w-[604px] lg:border-0 relative ${className}" id="tabs-${fn:replace(fn:toLowerCase(tabs), ',', '-')}">
+<aside class="bg-white container mx-auto max-w-[604px] relative ${className}" id="tabs-${fn:replace(fn:toLowerCase(tabs), ',', '-')}">
     <ul class="h-full ${containerClass}">
         <c:forEach var="tab" items="${tabsArray}" varStatus="status">
             <c:set var="tabLabel" value="${fn:trim(tab)}" />

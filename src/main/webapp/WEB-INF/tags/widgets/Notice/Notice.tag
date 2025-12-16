@@ -5,45 +5,17 @@
 <%@ attribute name="items" required="true" type="java.util.List" %>
 <%@ attribute name="buttonText" required="false" %>
 <%@ attribute name="buttonOnClick" required="false" %>
-<%@ attribute name="showDivider" required="false" type="java.lang.Boolean" %>
 <%@ attribute name="className" required="false" %>
 
-<%
-    // title 기본값
-    String titleValue = (String) jspContext.getAttribute("title");
-    if (titleValue == null || titleValue.isEmpty()) {
-        titleValue = "유의사항";
-    }
-    jspContext.setAttribute("titleValue", titleValue);
-    
-    // buttonText 기본값
-    String buttonTextValue = (String) jspContext.getAttribute("buttonText");
-    if (buttonTextValue == null || buttonTextValue.isEmpty()) {
-        buttonTextValue = "더 많은 사은행사가 궁금하다면";
-    }
-    jspContext.setAttribute("buttonTextValue", buttonTextValue);
-    
-    // showDivider 기본값
-    Boolean showDividerValue = (Boolean) jspContext.getAttribute("showDivider");
-    if (showDividerValue == null) {
-        showDividerValue = true;
-    }
-    jspContext.setAttribute("showDividerValue", showDividerValue);
-    
-    // buttonOnClick 기본값
-    String buttonOnClickValue = (String) jspContext.getAttribute("buttonOnClick");
-    if (buttonOnClickValue == null) {
-        buttonOnClickValue = "";
-    }
-    jspContext.setAttribute("buttonOnClickValue", buttonOnClickValue);
-%>
+<%-- Default Values --%>
+<c:set var="titleValue" value="${empty title ? '유의사항' : title}" />
+<c:set var="buttonTextValue" value="${empty buttonText ? '더 많은 사은행사가 궁금하다면' : buttonText}" />
+<c:set var="buttonOnClickValue" value="${empty buttonOnClick ? '' : buttonOnClick}" />
+
 
 <!-- 유의사항 섹션 -->
-<section class="flex flex-col w-full ${className}" aria-label="유의사항">
-    <!-- 상단 점선 구분선 -->
-    <c:if test="${showDividerValue}">
-        <hr class="w-full h-0 border-0 border-t-[1px] border-[#DDE0E5] border-dashed mb-5" aria-hidden="true" />
-    </c:if>
+<section class="flex flex-col mt-[64px] w-full ${className}" aria-label="유의사항">
+    <hr class="w-full h-0 border-0 mb-[20px] border-t-[1px] border-[#DDE0E5] border-dashed" aria-hidden="true" />
     
     <!-- 제목 영역 -->
     <div class="flex items-center gap-2 mb-[16px]">
@@ -61,10 +33,8 @@
     <ul class="flex flex-col gap-2 mb-[32px] list-none">
         <c:forEach var="item" items="${items}">
             <li class="flex items-start gap-[5px]">
-                <!-- 불릿 포인트 -->
                 <span class="flex-shrink-0 w-[3px] h-[3px] rounded-full mt-[8px] ${item.isImportant != null && item.isImportant ? 'bg-[#EA2829]' : 'bg-[#ABB2BE]'}" 
                     aria-hidden="true"></span>
-                <!-- 텍스트 -->
                 <p class="flex-1 ${item.isImportant != null && item.isImportant ? 'text-[#EA2829]' : 'text-[#788497]'} font-normal text-[12px] leading-[1.5em] tracking-[-0.05em] m-0">
                     ${item.text}
                 </p>

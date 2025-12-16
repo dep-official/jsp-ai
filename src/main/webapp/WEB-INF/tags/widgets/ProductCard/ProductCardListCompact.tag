@@ -2,12 +2,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="product" tagdir="/WEB-INF/tags/widgets/ProductCard" %>
+<%@ taglib prefix="lib" tagdir="/WEB-INF/tags/widgets/ProductCard/lib" %>
 <%@ attribute name="products" required="true" type="java.util.List" %>
 <%@ attribute name="className" required="false" %>
 <%@ variable name-given="sortedProducts" variable-class="java.util.List" scope="AT_END" %>
 
-<%-- 정렬 로직 (공통 lib 사용) --%>
-<%@ include file="/WEB-INF/tags/widgets/ProductCard/lib/ProductSorter.tag" %>
+<!-- 상품 정렬 (lib) -->
+<lib:ProductSorter products="${products}" />
 
 <!-- 상품 리스트 위젯 (3단 그리드) -->
 <div class="grid grid-cols-3 gap-x-[8px] gap-y-8 w-full ${className}">
@@ -15,7 +16,7 @@
         <product:ProductCard 
             size="compact"
             imageUrl="${product.imageUrl}"
-            brand="${product.brand}"
+            brand="${product.brandName}"
             mdKeyword="${product.mdKeyword}"
             name="${product.name}"
             originalPrice="${product.originalPrice}"

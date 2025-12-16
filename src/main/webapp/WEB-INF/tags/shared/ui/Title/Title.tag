@@ -6,7 +6,7 @@
 <%@ attribute name="className" required="false" %>
 
 <div class="flex flex-col items-center justify-center ${className}">
-    <h2 class="text-[22px] font-bold leading-[1.45em] tracking-[-0.05em] text-[#1B1E23] text-center mb-[6px] m-0">
+    <h2 class="text-[22px] font-bold leading-[1.45em] tracking-[-0.05em] text-[#1B1E23] text-center mt-[8px] m-0">
         <c:set var="normalizedTitle" value="${fn:replace(title, '<br/>', '|||BREAK|||')}" />
         <c:set var="normalizedTitle" value="${fn:replace(normalizedTitle, '<br>', '|||BREAK|||')}" />
         <c:set var="normalizedTitle" value="${fn:replace(normalizedTitle, '&#10;', '|||BREAK|||')}" />
@@ -17,7 +17,7 @@
     </h2>
     
     <c:if test="${!empty subtitle}">
-        <p class="text-[14px] font-normal leading-[1.43em] tracking-[-0.05em] text-[#5C6677] text-center mb-[12px]">
+        <p class="text-[14px] font-normal leading-[1.43em] tracking-[-0.05em] text-[#5C6677] text-center mt-[6px]">
             ${subtitle}
         </p>
     </c:if>

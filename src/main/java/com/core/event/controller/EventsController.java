@@ -1,7 +1,8 @@
 package com.core.event.controller;
 
+import com.core.brand.service.BrandService;
 import com.core.event.service.EventService;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.core.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,16 +10,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Map;
 
 @Controller
 public class EventsController {
 
     @Autowired
     private EventService eventService;
-    
-    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    @Autowired
+    private ProductService productService;
+
+    @Autowired
+    private BrandService brandService;
 
     @GetMapping("/events")
     public String events(Model model) {
@@ -26,39 +29,33 @@ public class EventsController {
     }
 
     @GetMapping("/events/{id}")
-    public String eventDetail(@PathVariable String id, Model model, HttpServletRequest request) {
-        Long eventId = Long.parseLong(id);
+    public String eventDetail(@PathVariable Long id, Model model, HttpServletRequest request) {
 
         // Event 조회
-        model.addAttribute("KVBanner", eventService.findById(eventId));
+        model.addAttribute("event", eventService.getEventById(id));
+
         // EventNotice 목록 조회
-        model.addAttribute("noticeItems", eventService.findNoticesByEventId(eventId));
+        model.addAttribute("noticeItems", eventService.getEventNoticeById(id));
+
+        // eventId로 상품 목록 조회
+        model.addAttribute("products", productService.getProductsByEventId(id));
+
+        // eventId로 추천 상품 목록 조회 
+        model.addAttribute("recommendedProducts", productService.getRecommendedProducts(id));
+
+        // eventId로 브랜드 목록 조회
+        model.addAttribute("brands", eventService.getEventBrandsById(id));
+
+        // eventId를 JSP에 전달
+        model.addAttribute("eventId", id);
+
+        // eventId와 brandId로 상품 목록 조회
+        model.addAttribute("eventProducts", productService.getProductsByEventIdAndBrandIds(id, eventService.getBrandIdsByEventId(id)));
         
-        // 행사 브랜드 목록 조회 (Service에서 변환)
-        model.addAttribute("brands", eventService.findBrandsForView(eventId));
-        
-        // 추천 상품 목록 조회 (Service에서 변환)
-        model.addAttribute("recommendedProducts", eventService.findRecommendedProductsForView(eventId));
-        
-        // 전체 상품 목록 조회 (Service에서 변환, 클라이언트 사이드 필터링/정렬용)
-        List<Map<String, Object>> allProducts = eventService.findAllProductsForView(eventId);
-        model.addAttribute("allProducts", allProducts);
-        
-        // JSON으로 변환하여 전달 (JavaScript에서 파싱하기 쉽도록)
-        try {
-            String allProductsJson = objectMapper.writeValueAsString(allProducts);
-            model.addAttribute("allProductsJson", allProductsJson);
-        } catch (Exception e) {
-            // JSON 변환 실패 시 빈 배열
-            model.addAttribute("allProductsJson", "[]");
-        }
-        
-        // Event 1: 임시로 allProducts 사용 (반응형 개발 완료 후 eventId 기반 조회로 수정 예정)
-        model.addAttribute("productsForEvent1", allProducts);
-        
-        // Event 2: 임시로 allProducts 사용 (반응형 개발 완료 후 eventId 기반 조회로 수정 예정)
-        model.addAttribute("productsForEvent2", allProducts);
-        
+        // eventId로 브랜드 목록 조회
+        model.addAttribute("brands", brandService.getEventBrandsById(id));
+
         return "events-detail";
     }
+
 }

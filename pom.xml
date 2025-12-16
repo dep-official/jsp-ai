@@ -257,6 +257,13 @@
 			<groupId>org.apache.tiles</groupId>
 			<artifactId>tiles-extras</artifactId>
 			<version>3.0.8</version>
+			<exclusions>
+				<!-- Velocity 템플릿 엔진 제외 (JSP만 사용) -->
+				<exclusion>
+					<groupId>org.apache.tiles</groupId>
+					<artifactId>tiles-request-velocity</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 	

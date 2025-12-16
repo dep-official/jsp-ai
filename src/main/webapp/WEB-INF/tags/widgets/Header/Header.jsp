@@ -11,7 +11,7 @@
         <ui:IconButton src="${iconUrlBack}" size="sm" ariaLabel="뒤로가기" />
 
         <h1 class="flex-1 text-center text-[18px] absolute left-1/2 -translate-x-1/2 font-bold text-[#1B1E23] leading-[1.5em] tracking-[-0.05em]">
-            ${title != null ? title : '사은행사'}
+            ${title != null ? title : '기획전'}
         </h1>
 
         <div class="flex items-center gap-4">

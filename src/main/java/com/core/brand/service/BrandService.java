@@ -1,21 +1,31 @@
 package com.core.brand.service;
 
 import com.core.brand.entity.Brand;
-import com.core.brand.mapper.BrandMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
-@Service
-@Transactional(readOnly = true)
-public class BrandService {
 
-    @Autowired
-    private BrandMapper brandMapper;
-
-    public List<Brand> findAll() {
-        return brandMapper.findAll();
-    }
+public interface BrandService {
+   
+    
+    /** 
+     * 모든 브랜드 조회
+     * 
+     * @return 모든 브랜드 목록 
+     *  
+     */
+    List<Brand> getAllBrands();
+    
+    /** 
+     * 단일 브랜드 조회
+     * @param id 브랜드 ID
+     * @return 단일 브랜드
+     */
+    Brand getBrandById(Long id);
+    
+    /** 
+     * 행사 브랜드 조회
+     * @param id 행사 ID
+     * @return 행사 브랜드 목록
+     */
+    List<Brand> getEventBrandsById(Long id);
 }

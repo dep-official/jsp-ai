@@ -24,7 +24,7 @@
     
     <!-- Events 상세 페이지 -->
     <definition name="events-detail" extends="baseLayout">
-        <put-attribute name="content" value="/WEB-INF/tags/app/events/[id]/page.jsp" />
+        <put-attribute name="content" value="/WEB-INF/tags/app/events/detail/page.jsp" />
     </definition>
     
 </tiles-definitions>

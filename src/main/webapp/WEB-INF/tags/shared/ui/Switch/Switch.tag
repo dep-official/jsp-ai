@@ -42,6 +42,12 @@
         switchId = "switch_" + System.currentTimeMillis() + "_" + (int)(Math.random() * 1000);
     }
     jspContext.setAttribute("switchId", switchId);
+    // onChange 핸들러 처리 (자바 스크립틀릿에서 처리하여 EL 버전 호환성 문제 방지)
+    String onChangeHandler = "null";
+    if (onChangeValue != null && !onChangeValue.isEmpty()) {
+        onChangeHandler = "'" + onChangeValue.replace("'", "\\'") + "'";
+    }
+    jspContext.setAttribute("onChangeHandler", onChangeHandler);
 %>
 
 <!-- 토글 스위치 -->
@@ -62,7 +68,7 @@
     var switchId = '${switchId}';
     var switchElement = document.getElementById(switchId);
     var isChecked = ${checkedValue};
-    var onChangeHandler = ${onChangeValue != null && !onChangeValue.isEmpty() ? "'" + onChangeValue.replace("'", "\\'") + "'" : "null"};
+    var onChangeHandler = ${onChangeHandler};
     
     if (!switchElement) return;
     

@@ -13,248 +13,59 @@
         <result property="startDate" column="start_date"/>
         <result property="endDate" column="end_date"/>
         <result property="untilStockOut" column="until_stock_out"/>
+        <result property="templateType" column="template_type"/>
+        <result property="themeConfig" column="theme_config"/>
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
 
-    <!-- ProductSet ResultMap -->
-    <resultMap id="ProductSetResultMap" type="com.core.product.entity.ProductSet">
-        <id property="id" column="id"/>
-        <result property="eventId" column="event_id"/>
-        <result property="title" column="title"/>
-        <result property="subtitle" column="subtitle"/>
-        <result property="tagLabel" column="tag_label"/>
-        <result property="originalPrice" column="original_price"/>
-        <result property="discountPrice" column="discount_price"/>
-        <result property="discountRate" column="discount_rate"/>
-    </resultMap>
+    <sql id="EventColumns">
+        e.id,
+        e.title,
+        e.subtitle,
+        e.image_url,
+        start_date,
+        end_date,
+        until_stock_out,
+        e.template_type,
+        e.theme_config,
+        created_at,
+        e.updated_at
+    </sql>
+
+    <!-- Event 조회 -->
+    <select id="getEventById" resultMap="EventResultMap">
+        SELECT
+            <include refid="EventColumns" />
+        FROM events e
+        WHERE e.id = #{id}
+    </select>
 
     <!-- EventNotice ResultMap -->
     <resultMap id="EventNoticeResultMap" type="com.core.event.entity.EventNotice">
-        <id property="id" column="id"/>
+        <result property="id" column="id"/>
         <result property="eventId" column="event_id"/>
         <result property="text" column="text"/>
         <result property="isImportant" column="is_important"/>
         <result property="displayOrder" column="display_order"/>
     </resultMap>
 
-    <!-- Brand ResultMap -->
-    <resultMap id="BrandResultMap" type="com.core.brand.entity.Brand">
-        <id property="id" column="brand_id"/>
-        <result property="name" column="brand_name"/>
-        <result property="imageUrl" column="brand_image_url"/>
-    </resultMap>
+    <sql id="EventNoticeColumns">
+        en.id,
+        en.event_id,
+        en.text,
+        en.is_important,
+        en.display_order
+    </sql>
 
-    <!-- EventBrand ResultMap -->
-    <resultMap id="EventBrandResultMap" type="com.core.event.entity.EventBrand">
-        <id property="id" column="eb_id"/>
-        <result property="eventId" column="eb_event_id"/>
-        <result property="brandId" column="eb_brand_id"/>
-        <result property="displayOrder" column="eb_display_order"/>
-        <association property="brand" resultMap="BrandResultMap"/>
-    </resultMap>
-
-    <!-- Product ResultMap (EventRecommendedProduct용) -->
-    <resultMap id="ProductResultMap" type="com.core.product.entity.Product">
-        <id property="id" column="product_id"/>
-        <result property="name" column="product_name"/>
-        <result property="imageUrl" column="product_image_url"/>
-        <result property="brandId" column="product_brand_id"/>
-        <result property="brandName" column="product_brand_name"/>
-        <result property="mdKeyword" column="product_md_keyword"/>
-        <result property="originalPrice" column="product_original_price"/>
-        <result property="discountPrice" column="product_discount_price"/>
-        <result property="discountPriceWon" column="product_discount_price_won"/>
-        <result property="discountRate" column="product_discount_rate"/>
-        <result property="flags" column="product_flags"/>
-        <result property="isSoldOut" column="product_is_sold_out"/>
-        <result property="requiresAdultVerification" column="product_requires_adult_verification"/>
-        <result property="isAdultVerified" column="product_is_adult_verified"/>
-        <result property="requiresLoginForDiscount" column="product_requires_login_for_discount"/>
-        <result property="isLoggedIn" column="product_is_logged_in"/>
-    </resultMap>
-
-    <!-- EventRecommendedProduct ResultMap -->
-    <resultMap id="EventRecommendedProductResultMap" type="com.core.event.entity.EventRecommendedProduct">
-        <id property="id" column="erp_id"/>
-        <result property="eventId" column="erp_event_id"/>
-        <result property="productId" column="erp_product_id"/>
-        <result property="displayOrder" column="erp_display_order"/>
-        <association property="product" resultMap="ProductResultMap"/>
-    </resultMap>
-
-    <!-- Event 조회 -->
-    <select id="findById" resultMap="EventResultMap">
+    <select id="getEventNoticeById" resultMap="EventNoticeResultMap">
         SELECT
-            id,
-            title,
-            subtitle,
-            image_url,
-            start_date,
-            end_date,
-            until_stock_out,
-            created_at,
-            updated_at
-        FROM events
-        WHERE id = #{id}
+            <include refid="EventNoticeColumns" />
+        FROM event_notices en
+        WHERE en.event_id = #{id}
+        ORDER BY en.display_order ASC
     </select>
 
-    <!-- Event의 ProductSet 목록 조회 -->
-    <select id="findProductSetsByEventId" resultMap="ProductSetResultMap">
-        SELECT
-            id,
-            event_id,
-            title,
-            subtitle,
-            tag_label,
-            original_price,
-            discount_price,
-            discount_rate
-        FROM product_sets
-        WHERE event_id = #{eventId}
-        ORDER BY id ASC
-    </select>
-
-    <!-- Event의 Notice 목록 조회 -->
-    <select id="findNoticesByEventId" resultMap="EventNoticeResultMap">
-        SELECT
-            id,
-            event_id,
-            text,
-            is_important,
-            display_order
-        FROM event_notices
-        WHERE event_id = #{eventId}
-        ORDER BY display_order ASC
-    </select>
-
-    <!-- Event의 Brand 목록 조회 (브랜드 정보 포함) -->
-    <select id="findBrandsByEventId" resultMap="EventBrandResultMap">
-        SELECT
-            eb.id AS eb_id,
-            eb.event_id AS eb_event_id,
-            eb.brand_id AS eb_brand_id,
-            eb.display_order AS eb_display_order,
-            b.id AS brand_id,
-            b.name AS brand_name,
-            b.image_url AS brand_image_url
-        FROM event_brands eb
-        LEFT JOIN brands b ON eb.brand_id = b.id
-        WHERE eb.event_id = #{eventId}
-        ORDER BY eb.display_order ASC
-    </select>
-
-    <!-- Event의 추천 상품 목록 조회 (상품 정보 포함) -->
-    <select id="findRecommendedProductsByEventId" resultMap="EventRecommendedProductResultMap">
-        SELECT
-            erp.id AS erp_id,
-            erp.event_id AS erp_event_id,
-            erp.product_id AS erp_product_id,
-            erp.display_order AS erp_display_order,
-            p.id AS product_id,
-            p.name AS product_name,
-            p.image_url AS product_image_url,
-            p.brand_id AS product_brand_id,
-            b.name AS product_brand_name,
-            p.md_keyword AS product_md_keyword,
-            p.original_price AS product_original_price,
-            p.discount_price AS product_discount_price,
-            p.discount_price_won AS product_discount_price_won,
-            p.discount_rate AS product_discount_rate,
-            p.flags AS product_flags,
-            p.is_sold_out AS product_is_sold_out,
-            p.requires_adult_verification AS product_requires_adult_verification,
-            p.is_adult_verified AS product_is_adult_verified,
-            p.requires_login_for_discount AS product_requires_login_for_discount,
-            p.is_logged_in AS product_is_logged_in
-        FROM event_recommended_products erp
-        LEFT JOIN products p ON erp.product_id = p.id
-        LEFT JOIN brands b ON p.brand_id = b.id
-        WHERE erp.event_id = #{eventId}
-        ORDER BY erp.display_order ASC
-    </select>
-
-    <!-- Event의 전체 상품 목록 조회 (event_brands에 등록된 브랜드의 모든 상품) -->
-    <select id="findAllProductsByEventId" resultType="map">
-        SELECT DISTINCT
-            p.id AS id,
-            p.name AS name,
-            p.image_url AS imageUrl,
-            p.brand_id AS brandId,
-            b.name AS brand,
-            p.md_keyword AS mdKeyword,
-            p.original_price AS originalPrice,
-            p.discount_price AS discountPrice,
-            p.discount_price_won AS discountPriceWon,
-            p.discount_rate AS discountRate,
-            p.flags AS flags,
-            p.is_sold_out AS isSoldOut,
-            p.requires_adult_verification AS requiresAdultVerification,
-            p.is_adult_verified AS isAdultVerified,
-            p.requires_login_for_discount AS requiresLoginForDiscount,
-            p.is_logged_in AS isLoggedIn
-        FROM event_brands eb
-        INNER JOIN products p ON eb.brand_id = p.brand_id
-        LEFT JOIN brands b ON p.brand_id = b.id
-        WHERE eb.event_id = #{eventId}
-        ORDER BY p.id ASC
-    </select>
-
-    <!-- 브랜드 ID 목록으로 상품 조회 -->
-    <select id="findProductsByBrandIds" resultType="map">
-        SELECT DISTINCT
-            p.id AS id,
-            p.name AS name,
-            p.image_url AS imageUrl,
-            p.brand_id AS brandId,
-            b.name AS brand,
-            p.md_keyword AS mdKeyword,
-            p.original_price AS originalPrice,
-            p.discount_price AS discountPrice,
-            p.discount_price_won AS discountPriceWon,
-            p.discount_rate AS discountRate,
-            p.flags AS flags,
-            p.is_sold_out AS isSoldOut,
-            p.requires_adult_verification AS requiresAdultVerification,
-            p.is_adult_verified AS isAdultVerified,
-            p.requires_login_for_discount AS requiresLoginForDiscount,
-            p.is_logged_in AS isLoggedIn
-        FROM products p
-        LEFT JOIN brands b ON p.brand_id = b.id
-        WHERE p.brand_id IN
-        <foreach collection="brandIds" item="brandId" open="(" separator="," close=")">
-            #{brandId}
-        </foreach>
-        ORDER BY p.id ASC
-    </select>
-
-    <!-- Event ID와 tag_label로 상품 조회 (product_sets를 통해 연결된 상품) -->
-    <select id="findProductsByEventIdAndTagLabel" resultType="map">
-        SELECT DISTINCT
-            p.id AS id,
-            p.name AS name,
-            p.image_url AS imageUrl,
-            p.brand_id AS brandId,
-            b.name AS brand,
-            p.md_keyword AS mdKeyword,
-            p.original_price AS originalPrice,
-            p.discount_price AS discountPrice,
-            p.discount_price_won AS discountPriceWon,
-            p.discount_rate AS discountRate,
-            p.flags AS flags,
-            p.is_sold_out AS isSoldOut,
-            p.requires_adult_verification AS requiresAdultVerification,
-            p.is_adult_verified AS isAdultVerified,
-            p.requires_login_for_discount AS requiresLoginForDiscount,
-            p.is_logged_in AS isLoggedIn
-        FROM product_sets ps
-        INNER JOIN product_set_items psi ON ps.id = psi.product_set_id
-        INNER JOIN products p ON psi.product_id = p.id
-        LEFT JOIN brands b ON p.brand_id = b.id
-        WHERE ps.event_id = #{eventId}
-        AND ps.tag_label = #{tagLabel}
-        ORDER BY psi.display_order ASC, p.id ASC
-    </select>
 
 </mapper>
 

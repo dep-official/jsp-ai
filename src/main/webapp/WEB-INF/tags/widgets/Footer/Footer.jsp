@@ -92,7 +92,7 @@
     pageContext.setAttribute("copyright", copyright);
 %>
 
-<footer class="w-full">
+<footer class="w-full mt-[64px]">
     <!-- 공지사항 영역 -->
     <a class="relative bg-white h-[52px] flex items-center justify-between px-5 border-b border-[#EEF0F2]"
         <c:if test="${!empty notice.onClick}">onclick="${notice.onClick}"</c:if>
