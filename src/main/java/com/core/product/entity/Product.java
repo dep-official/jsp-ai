@@ -21,6 +21,7 @@ public class Product {
     private Boolean isAdultVerified;
     private Boolean requiresLoginForDiscount;
     private Boolean isLoggedIn;
+    private String videoUrl;
 }
 
 

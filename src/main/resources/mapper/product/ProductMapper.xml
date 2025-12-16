@@ -22,59 +22,43 @@
         <result property="isAdultVerified" column="is_adult_verified"/>
         <result property="requiresLoginForDiscount" column="requires_login_for_discount"/>
         <result property="isLoggedIn" column="is_logged_in"/>
+        <result property="videoUrl" column="video_url"/>
     </resultMap>
 
-    <!-- ProductSetItem ResultMap -->
-    <resultMap id="ProductSetItemResultMap" type="com.core.product.entity.ProductSetItem">
-        <id property="id" column="id"/>
-        <result property="productSetId" column="product_set_id"/>
-        <result property="productId" column="product_id"/>
-        <result property="displayOrder" column="display_order"/>
-    </resultMap>
+    <!-- Product 공통 컬럼 정의 -->
+    <sql id="ProductColumns">
+        p.id,
+        p.name,
+        p.image_url,
+        p.brand_id,
+        b.brand_name,
+        p.md_keyword,
+        p.original_price,
+        p.discount_price,
+        p.discount_price_won,
+        p.discount_rate,
+        p.flags,
+        p.is_sold_out,
+        p.requires_adult_verification,
+        p.is_adult_verified,
+        p.requires_login_for_discount,
+        p.is_logged_in,
+        p.video_url
+    </sql>
 
-    <!-- 추천 상품 목록 조회 (할인율 높은 순) -->
-    <select id="findRecommendedProducts" resultMap="ProductResultMap">
-        SELECT
-            p.id,
-            p.name,
-            p.image_url,
-            p.brand_id,
-            b.name AS brand_name,
-            p.md_keyword,
-            p.original_price,
-            p.discount_price,
-            p.discount_price_won,
-            p.discount_rate,
-            p.flags,
-            p.is_sold_out,
-            p.requires_adult_verification,
-            p.is_adult_verified,
-            p.requires_login_for_discount,
-            p.is_logged_in
+    <!-- 전체 상품 목록 조회 -->
+    <select id="getAllProducts" resultMap="ProductResultMap"> 
+        SELECT 
+            <include refid="ProductColumns" />
         FROM products p
         LEFT JOIN brands b ON p.brand_id = b.id
-        ORDER BY p.discount_rate DESC NULLS LAST, p.id ASC
+        ORDER BY p.id ASC
     </select>
 
-    <!-- ID 목록으로 상품 조회 -->
-    <select id="findByIds" resultMap="ProductResultMap">
+    <!-- ID 목록으로 상품 목록 조회 -->
+    <select id="getProductByIds" resultMap="ProductResultMap">
         SELECT
-            p.id,
-            p.name,
-            p.image_url,
-            p.brand_id,
-            b.name AS brand_name,
-            p.md_keyword,
-            p.original_price,
-            p.discount_price,
-            p.discount_price_won,
-            p.discount_rate,
-            p.flags,
-            p.is_sold_out,
-            p.requires_adult_verification,
-            p.is_adult_verified,
-            p.requires_login_for_discount,
-            p.is_logged_in
+            <include refid="ProductColumns" />
         FROM products p
         LEFT JOIN brands b ON p.brand_id = b.id
         WHERE p.id IN
@@ -85,40 +69,56 @@
     </select>
 
     <!-- 단일 상품 조회 -->
-    <select id="findById" resultMap="ProductResultMap">
+    <select id="getProductById" resultMap="ProductResultMap">
         SELECT
-            p.id,
-            p.name,
-            p.image_url,
-            p.brand_id,
-            b.name AS brand_name,
-            p.md_keyword,
-            p.original_price,
-            p.discount_price,
-            p.discount_price_won,
-            p.discount_rate,
-            p.flags,
-            p.is_sold_out,
-            p.requires_adult_verification,
-            p.is_adult_verified,
-            p.requires_login_for_discount,
-            p.is_logged_in
+            <include refid="ProductColumns" />
         FROM products p
         LEFT JOIN brands b ON p.brand_id = b.id
         WHERE p.id = #{id}
     </select>
 
-    <!-- ProductSet의 Item 목록 조회 -->
-    <select id="findProductSetItemsByProductSetId" resultMap="ProductSetItemResultMap">
+    <!-- 추천 상품 목록 조회 -->
+    <select id="getRecommendedProducts" resultMap="ProductResultMap">
         SELECT
-            id,
-            product_set_id,
-            product_id,
-            display_order
-        FROM product_set_items
-        WHERE product_set_id = #{productSetId}
-        ORDER BY display_order ASC
+            <include refid="ProductColumns" />
+        FROM products p
+        INNER JOIN event_products ep ON p.id = ep.product_id
+        LEFT JOIN brands b ON p.brand_id = b.id
+        WHERE ep.event_id = #{eventId}
+          AND ep.is_recommend = true
+        ORDER BY ep.display_order ASC, p.id ASC
     </select>
+
+    <!-- eventId로 상품 목록 조회 -->
+    <select id="getProductsByEventId" resultMap="ProductResultMap">
+        SELECT
+            <include refid="ProductColumns" />
+        FROM products p
+        INNER JOIN event_products ep ON p.id = ep.product_id
+        LEFT JOIN brands b ON p.brand_id = b.id
+        WHERE ep.event_id = #{eventId}
+        ORDER BY ep.display_order ASC, p.id ASC
+    </select>
+
+    <!-- eventId와 brandId로 상품 목록 조회  -->
+    <select id="getProductsByEventIdAndBrandIds" resultMap="ProductResultMap">
+        SELECT
+            <include refid="ProductColumns" />
+        FROM products p
+        INNER JOIN event_products ep ON p.id = ep.product_id
+        LEFT JOIN brands b ON p.brand_id = b.id
+        WHERE ep.event_id = #{eventId}
+        <if test="brandIds != null and !brandIds.isEmpty()">
+          AND p.brand_id IN
+          <foreach collection="brandIds" item="brandId" open="(" separator="," close=")">
+              #{brandId}
+          </foreach>
+        </if>
+        ORDER BY ep.display_order ASC, p.id ASC
+    </select>
+    
+    <!-- brandId 목록으로 상품 목록 조회  -->
+
 
 </mapper>
 
