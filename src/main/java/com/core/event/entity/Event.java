@@ -1,9 +1,7 @@
 package com.core.event.entity;
 
-import com.core.product.entity.ProductSet;
 import lombok.Data;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 public class Event {
@@ -14,9 +12,12 @@ public class Event {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private Boolean untilStockOut;
+    
+    // 템플릿 설정
+    private String templateType; // DEFAULT, PRODUCT_SET_A, PRODUCT_SET_B
+    private String themeConfig;  // JSON String for theme configuration
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private List<ProductSet> productSets;
 }
 
 

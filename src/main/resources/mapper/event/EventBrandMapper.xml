@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.core.event.mapper.EventBrandMapper">
+
+    <!-- Event ResultMap -->
+    <resultMap id="EventResultMap" type="com.core.event.entity.EventBrand">
+        <id property="id" column="id"/>
+        <result property="eventId" column="event_id"/>
+        <result property="brandId" column="brand_id"/>
+        <result property="displayOrder" column="display_order"/>
+    </resultMap>
+
+    <sql id="EventBrandColumns">
+        eb.id,
+        eb.event_id,
+        eb.brand_id,
+        eb.display_order
+    </sql>
+
+    <select id="getEventBrandsById" resultMap="EventResultMap">
+        SELECT
+            <include refid="EventBrandColumns" />
+        FROM event_brands eb
+        WHERE eb.event_id = #{id}
+        ORDER BY eb.display_order ASC
+    </select>
+
+</mapper>
