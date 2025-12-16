@@ -13,7 +13,7 @@
 
 <div class="flex flex-col items-center justify-center ${className}">
     <c:if test="${!empty tagLabel}">
-        <tag:Tag label="${tagLabel}" className="mb-2" variant="event" />
+        <tag:Tag label="${tagLabel}" variant="event" />
     </c:if>
     
     <title:Title title="${title}" subtitle="${subtitle}" />

@@ -67,11 +67,8 @@
     jspContext.setAttribute("productIdValue", productIdValue);
 %>
 
-<!-- 제품 세트 카드 -->
-<article class="flex flex-col w-full max-w-[335px] bg-white ${className}">
-    <!-- 제목 영역 -->
+<article class="flex flex-col w-full bg-white ${className}">
     <div class="flex flex-col items-center w-full">
-        <!-- Event 태그 -->
         <c:if test="${!empty tagLabel}">
             <tag:Tag 
                 label="${tagLabel}"
@@ -79,12 +76,10 @@
                 className="mb-2 bg-[#7F519C]" />
         </c:if>
         
-        <!-- 메인 제목 -->
         <h5 class="text-[#1B1E23] font-bold text-[22px] leading-[1.455em] tracking-[-0.05em] text-center w-full mb-[8px]">
             ${title}
         </h5>
         
-        <!-- 서브타이틀 -->
         <c:if test="${!empty subtitle}">
             <p class="text-[#5C6677] font-normal text-[14px] leading-[1.429em] tracking-[-0.05em] text-center w-full mb-[24px]">
                 ${subtitle}
@@ -92,8 +87,7 @@
         </c:if>
     </div>
     
-    <!-- 제품 이미지 영역: Swiper -->
-    <div class="relative w-full h-[335px] overflow-hidden rounded-t-[8px]">
+    <div class="relative w-full aspect-square overflow-hidden rounded-t-[8px]">
         <div class="swiper ${swiperId} w-full h-full">
             <ul class="swiper-wrapper">
                 <c:forEach var="thumbnail" items="${thumbnails}">
@@ -109,13 +103,10 @@
                 </c:forEach>
             </ul>
         </div>
-        <!-- 그라데이션 오버레이 (하단, 전체 Swiper에 적용) -->
         <div class="absolute bottom-0 left-0 right-0 h-[96px] bg-gradient-to-t from-[rgba(115,115,115,1)] to-[rgba(115,115,115,0)] pointer-events-none z-[5]" aria-hidden="true"></div>
-        <!-- Swiper 인디케이터 -->
         <div class="absolute left-0 right-0 mb-[12px] flex justify-center items-center z-10 ${swiperId}-pagination" aria-label="이미지 인디케이터"></div>
     </div>
     
-    <!-- Swiper JS -->
     <script>
     (function() {
         var swiperId = '${swiperId}';
@@ -158,19 +149,15 @@
     })();
     </script>
     
-    <!-- 제품 정보 영역 -->
-    <div class="px-4 pt-0 pb-4 border border-[#DDE0E5] rounded-b-[8px] overflow-hidden">
-        <!-- 상품 구성 썸네일 바 -->
+    <div class="px-4 pt-0 pb-4 border border-[#DDE0E5] rounded-b-[8px]">
         <productSetThumbBar:ProductSetThumbBar 
             thumbnails="${thumbnails}"
             title="상품 구성"
             onClick="document.getElementById('${dialogId}').showModal()"
             className="my-4 cursor-pointer" />
         
-        <!-- 구분선 -->
         <hr class="w-full h-0 border-0 border-t border-[#EEF0F2] mb-4" aria-hidden="true" />
         
-        <!-- 가격 및 장바구니 담기 바 -->
         <productPriceCartBar:ProductPriceCartBar 
             originalPrice="${originalPrice}"
             discountPrice="${discountPrice}"
