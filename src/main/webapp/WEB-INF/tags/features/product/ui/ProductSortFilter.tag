@@ -83,7 +83,7 @@
             <span class="text-[#1B1E23] font-medium text-[14px] leading-[1.4285714285714286em] tracking-[-0.05em]">
                 총
             </span>
-            <span class="text-[#1B1E23] font-medium text-[14px] leading-[1.4285714285714286em] tracking-[-0.05em]">
+            <span id="productCount" class="text-[#1B1E23] font-medium text-[14px] leading-[1.4285714285714286em] tracking-[-0.05em]">
                 ${formattedCount}건
             </span>
         </div>
@@ -103,7 +103,8 @@
                 id="${sortFilterId}_soldOutSwitch"
                 checked="${showSoldOutValue}"
                 ariaLabel="품절 상품 표시"
-                className="flex-shrink-0" />
+                className="flex-shrink-0"
+                onChange="filterProducts_${sortFilterId}" />
         </div>
         
         <!-- 구분선: 세로 구분선 -->
@@ -134,3 +135,27 @@
     </div>
 </div>
 
+<%@ include file="/WEB-INF/tags/features/product/lib/ProductFilterLogic.tag" %>
+
+<script>
+    // 전역 필터 함수 정의 (Switch 컴포넌트에서 호출)
+    // createProductFilter 함수는 ProductFilterLogic.tag에서 정의됨
+    window.filterProducts_${sortFilterId} = window.createProductFilter(
+        '${sortFilterId}', 
+        'allProductsContainer', 
+        'productCount'
+    );
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var filterId = '${sortFilterId}';
+        var switchId = filterId + '_soldOutSwitch';
+        var switchButton = document.getElementById(switchId);
+        
+        // 초기 상태 적용
+        if (switchButton) {
+            // aria-checked 속성으로 초기 상태 확인
+            var isChecked = switchButton.getAttribute('aria-checked') === 'true';
+            window.filterProducts_${sortFilterId}(isChecked);
+        }
+    });
+</script>
