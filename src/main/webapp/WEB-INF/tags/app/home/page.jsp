@@ -185,140 +185,140 @@
         <section>
             <h3 class="mb-4 text-lg font-semibold">ProductList 위젯 (2단)</h3>
             <%
-                java.util.List<java.util.Map<String, Object>> productList = new java.util.ArrayList<>();
+                java.util.List<com.core.product.entity.Product> productList = new java.util.ArrayList<>();
                 String contextPath = request.getContextPath();
                 
-                java.util.Map<String, Object> p1 = new java.util.HashMap<>();
-                p1.put("imageUrl", contextPath + "/public/images/products/product-1.png");
-                p1.put("brand", "바비브라운");
-                p1.put("mdKeyword", "MD 키워드 최대 2줄 노출 가능");
-                p1.put("name", "인텐시브 세럼 파운데이션 SPF 40 #Po...");
-                p1.put("originalPrice", "$39");
-                p1.put("discountRate", "40");
-                p1.put("discountPrice", "$61");
-                p1.put("discountPriceWon", "72,320원");
-                p1.put("flags", "세일,베스트");
-                p1.put("requiresAdultVerification", "false");
-                p1.put("isAdultVerified", "false");
+                com.core.product.entity.Product p1 = new com.core.product.entity.Product();
+                p1.setImageUrl(contextPath + "/public/images/products/product-1.png");
+                p1.setBrandName("바비브라운");
+                p1.setMdKeyword("MD 키워드 최대 2줄 노출 가능");
+                p1.setName("인텐시브 세럼 파운데이션 SPF 40 #Po...");
+                p1.setOriginalPrice(new java.math.BigDecimal("39"));
+                p1.setDiscountRate(40);
+                p1.setDiscountPrice(new java.math.BigDecimal("61"));
+                p1.setDiscountPriceWon("72,320원");
+                p1.setFlags("세일,베스트");
+                p1.setRequiresAdultVerification(false);
+                p1.setIsAdultVerified(false);
                 productList.add(p1);
                 
-                java.util.Map<String, Object> p2 = new java.util.HashMap<>();
-                p2.put("imageUrl", contextPath + "/public/images/products/product-2.png");
-                p2.put("brand", "바비브라운");
-                p2.put("name", "엑스트라 리페어 모이스춰 크림 인텐스...");
-                p2.put("originalPrice", "$39");
-                p2.put("discountRate", "40");
-                p2.put("discountPrice", "$61");
-                p2.put("flags", "세일,베스트");
-                p2.put("requiresAdultVerification", "false");
+                com.core.product.entity.Product p2 = new com.core.product.entity.Product();
+                p2.setImageUrl(contextPath + "/public/images/products/product-2.png");
+                p2.setBrandName("바비브라운");
+                p2.setName("엑스트라 리페어 모이스춰 크림 인텐스...");
+                p2.setOriginalPrice(new java.math.BigDecimal("39"));
+                p2.setDiscountRate(40);
+                p2.setDiscountPrice(new java.math.BigDecimal("61"));
+                p2.setFlags("세일,베스트");
+                p2.setRequiresAdultVerification(false);
                 productList.add(p2);
                 
-                java.util.Map<String, Object> p3 = new java.util.HashMap<>();
-                p3.put("imageUrl", contextPath + "/public/images/products/product-3.png");
-                p3.put("brand", "바비브라운");
-                p3.put("name", "엑스트라 립 틴트 #베어 체리");
-                p3.put("originalPrice", "$39");
-                p3.put("discountRate", "40");
-                p3.put("discountPrice", "$61");
-                p3.put("flags", "세일");
-                p3.put("isSoldOut", "true");
-                p3.put("requiresAdultVerification", "false");
+                com.core.product.entity.Product p3 = new com.core.product.entity.Product();
+                p3.setImageUrl(contextPath + "/public/images/products/product-3.png");
+                p3.setBrandName("바비브라운");
+                p3.setName("엑스트라 립 틴트 #베어 체리");
+                p3.setOriginalPrice(new java.math.BigDecimal("39"));
+                p3.setDiscountRate(40);
+                p3.setDiscountPrice(new java.math.BigDecimal("61"));
+                p3.setFlags("세일");
+                p3.setIsSoldOut(true);
+                p3.setRequiresAdultVerification(false);
                 productList.add(p3);
                 
-                java.util.Map<String, Object> p4 = new java.util.HashMap<>();
-                p4.put("imageUrl", contextPath + "/public/images/products/product-4.png");
-                p4.put("brand", "조니워커");
-                p4.put("name", "조니워커 블루라벨");
-                p4.put("originalPrice", "$39");
-                p4.put("discountRate", "40");
-                p4.put("discountPrice", "$61");
-                p4.put("flags", "세일,베스트");
-                p4.put("requiresAdultVerification", "true");
-                p4.put("isAdultVerified", "false");
+                com.core.product.entity.Product p4 = new com.core.product.entity.Product();
+                p4.setImageUrl(contextPath + "/public/images/products/product-4.png");
+                p4.setBrandName("조니워커");
+                p4.setName("조니워커 블루라벨");
+                p4.setOriginalPrice(new java.math.BigDecimal("39"));
+                p4.setDiscountRate(40);
+                p4.setDiscountPrice(new java.math.BigDecimal("61"));
+                p4.setFlags("세일,베스트");
+                p4.setRequiresAdultVerification(true);
+                p4.setIsAdultVerified(false);
                 productList.add(p4);
                 
-                java.util.Map<String, Object> p5 = new java.util.HashMap<>();
-                p5.put("imageUrl", contextPath + "/public/images/products/product-5.png");
-                p5.put("name", "라네즈 크림스킨 170ML");
-                p5.put("discountRate", "40");
-                p5.put("discountPrice", "$11.7");
-                p5.put("requiresAdultVerification", "false");
-                p5.put("requiresLoginForDiscount", "true");
-                p5.put("isLoggedIn", "false");
+                com.core.product.entity.Product p5 = new com.core.product.entity.Product();
+                p5.setImageUrl(contextPath + "/public/images/products/product-5.png");
+                p5.setName("라네즈 크림스킨 170ML");
+                p5.setDiscountRate(40);
+                p5.setDiscountPrice(new java.math.BigDecimal("11.7"));
+                p5.setRequiresAdultVerification(false);
+                p5.setRequiresLoginForDiscount(true);
+                p5.setIsLoggedIn(false);
                 productList.add(p5);
                 
                 // 추가 제품 (6-12)
-                java.util.Map<String, Object> p6 = new java.util.HashMap<>();
-                p6.put("imageUrl", contextPath + "/public/images/products/product-1.png");
-                p6.put("brand", "라네즈");
-                p6.put("name", "라네즈 네오 에센셜 블러링 피니시 파우더");
-                p6.put("originalPrice", "$39");
-                p6.put("discountRate", "70");
-                p6.put("discountPrice", "$11.7");
-                p6.put("requiresAdultVerification", "false");
+                com.core.product.entity.Product p6 = new com.core.product.entity.Product();
+                p6.setImageUrl(contextPath + "/public/images/products/product-1.png");
+                p6.setBrandName("라네즈");
+                p6.setName("라네즈 네오 에센셜 블러링 피니시 파우더");
+                p6.setOriginalPrice(new java.math.BigDecimal("39"));
+                p6.setDiscountRate(70);
+                p6.setDiscountPrice(new java.math.BigDecimal("11.7"));
+                p6.setRequiresAdultVerification(false);
                 productList.add(p6);
                 
-                java.util.Map<String, Object> p7 = new java.util.HashMap<>();
-                p7.put("imageUrl", contextPath + "/public/images/products/product-2.png");
-                p7.put("brand", "라네즈");
-                p7.put("name", "라네즈 워터뱅크 블루 히알루로닉 모이스춰 크림");
-                p7.put("originalPrice", "$39");
-                p7.put("discountRate", "70");
-                p7.put("discountPrice", "$11.7");
-                p7.put("requiresAdultVerification", "false");
+                com.core.product.entity.Product p7 = new com.core.product.entity.Product();
+                p7.setImageUrl(contextPath + "/public/images/products/product-2.png");
+                p7.setBrandName("라네즈");
+                p7.setName("라네즈 워터뱅크 블루 히알루로닉 모이스춰 크림");
+                p7.setOriginalPrice(new java.math.BigDecimal("39"));
+                p7.setDiscountRate(70);
+                p7.setDiscountPrice(new java.math.BigDecimal("11.7"));
+                p7.setRequiresAdultVerification(false);
                 productList.add(p7);
                 
-                java.util.Map<String, Object> p8 = new java.util.HashMap<>();
-                p8.put("imageUrl", contextPath + "/public/images/products/product-3.png");
-                p8.put("brand", "라네즈");
-                p8.put("name", "라네즈 래디언씨 더블 액티브 브라이트닝 에센스");
-                p8.put("originalPrice", "$39");
-                p8.put("discountRate", "70");
-                p8.put("discountPrice", "$11.7");
-                p8.put("isSoldOut", "true");
-                p8.put("requiresAdultVerification", "false");
+                com.core.product.entity.Product p8 = new com.core.product.entity.Product();
+                p8.setImageUrl(contextPath + "/public/images/products/product-3.png");
+                p8.setBrandName("라네즈");
+                p8.setName("라네즈 래디언씨 더블 액티브 브라이트닝 에센스");
+                p8.setOriginalPrice(new java.math.BigDecimal("39"));
+                p8.setDiscountRate(70);
+                p8.setDiscountPrice(new java.math.BigDecimal("11.7"));
+                p8.setIsSoldOut(true);
+                p8.setRequiresAdultVerification(false);
                 productList.add(p8);
                 
-                java.util.Map<String, Object> p9 = new java.util.HashMap<>();
-                p9.put("imageUrl", contextPath + "/public/images/products/product-4.png");
-                p9.put("brand", "라네즈");
-                p9.put("name", "라네즈 워터슬리핑마스크 EX 70ml");
-                p9.put("originalPrice", "$39");
-                p9.put("discountRate", "70");
-                p9.put("discountPrice", "$11.7");
-                p9.put("requiresAdultVerification", "false");
+                com.core.product.entity.Product p9 = new com.core.product.entity.Product();
+                p9.setImageUrl(contextPath + "/public/images/products/product-4.png");
+                p9.setBrandName("라네즈");
+                p9.setName("라네즈 워터슬리핑마스크 EX 70ml");
+                p9.setOriginalPrice(new java.math.BigDecimal("39"));
+                p9.setDiscountRate(70);
+                p9.setDiscountPrice(new java.math.BigDecimal("11.7"));
+                p9.setRequiresAdultVerification(false);
                 productList.add(p9);
                 
-                java.util.Map<String, Object> p10 = new java.util.HashMap<>();
-                p10.put("imageUrl", contextPath + "/public/images/products/product-5.png");
-                p10.put("brand", "라네즈");
-                p10.put("name", "라네즈 스킨베일베이스 EX_40호 듀오세트");
-                p10.put("originalPrice", "$39");
-                p10.put("discountRate", "70");
-                p10.put("discountPrice", "$11.7");
-                p10.put("requiresAdultVerification", "false");
+                com.core.product.entity.Product p10 = new com.core.product.entity.Product();
+                p10.setImageUrl(contextPath + "/public/images/products/product-5.png");
+                p10.setBrandName("라네즈");
+                p10.setName("라네즈 스킨베일베이스 EX_40호 듀오세트");
+                p10.setOriginalPrice(new java.math.BigDecimal("39"));
+                p10.setDiscountRate(70);
+                p10.setDiscountPrice(new java.math.BigDecimal("11.7"));
+                p10.setRequiresAdultVerification(false);
                 productList.add(p10);
                 
-                java.util.Map<String, Object> p11 = new java.util.HashMap<>();
-                p11.put("imageUrl", contextPath + "/public/images/products/product-1.png");
-                p11.put("brand", "바비브라운");
-                p11.put("name", "인텐시브 세럼 파운데이션 SPF 40 #Po...");
-                p11.put("originalPrice", "$39");
-                p11.put("discountRate", "50");
-                p11.put("discountPrice", "$19.5");
-                p11.put("flags", "세일,베스트");
-                p11.put("requiresAdultVerification", "false");
+                com.core.product.entity.Product p11 = new com.core.product.entity.Product();
+                p11.setImageUrl(contextPath + "/public/images/products/product-1.png");
+                p11.setBrandName("바비브라운");
+                p11.setName("인텐시브 세럼 파운데이션 SPF 40 #Po...");
+                p11.setOriginalPrice(new java.math.BigDecimal("39"));
+                p11.setDiscountRate(50);
+                p11.setDiscountPrice(new java.math.BigDecimal("19.5"));
+                p11.setFlags("세일,베스트");
+                p11.setRequiresAdultVerification(false);
                 productList.add(p11);
                 
-                java.util.Map<String, Object> p12 = new java.util.HashMap<>();
-                p12.put("imageUrl", contextPath + "/public/images/products/product-2.png");
-                p12.put("brand", "바비브라운");
-                p12.put("name", "엑스트라 리페어 모이스춰 크림 인텐스...");
-                p12.put("originalPrice", "$39");
-                p12.put("discountRate", "60");
-                p12.put("discountPrice", "$15.6");
-                p12.put("flags", "세일");
-                p12.put("requiresAdultVerification", "false");
+                com.core.product.entity.Product p12 = new com.core.product.entity.Product();
+                p12.setImageUrl(contextPath + "/public/images/products/product-2.png");
+                p12.setBrandName("바비브라운");
+                p12.setName("엑스트라 리페어 모이스춰 크림 인텐스...");
+                p12.setOriginalPrice(new java.math.BigDecimal("39"));
+                p12.setDiscountRate(60);
+                p12.setDiscountPrice(new java.math.BigDecimal("15.6"));
+                p12.setFlags("세일");
+                p12.setRequiresAdultVerification(false);
                 productList.add(p12);
                 
                 pageContext.setAttribute("productList", productList);
@@ -613,7 +613,7 @@
                     for (int i = 0; i < brandNames.length; i++) {
                         java.util.Map<String, Object> brand = new java.util.HashMap<>();
                         brand.put("imageUrl", brandContextPath + "/public/images/brands/brand-" + (i + 1) + ".svg");
-                        brand.put("name", brandNames[i]);
+                        brand.put("brandName", brandNames[i]);
                         brand.put("onClick", "console.log('브랜드 클릭', '" + brandNames[i] + "')");
                         brandList.add(brand);
                     }
@@ -677,7 +677,6 @@
                     items="${noticeItems}"
                     buttonText="더 많은 사은행사가 궁금하다면"
                     buttonOnClick="console.log('더 많은 사은행사 클릭')"
-                    showDivider="true"
                     className="w-full max-w-[335px] mx-auto" />
             </div>
         </section>
